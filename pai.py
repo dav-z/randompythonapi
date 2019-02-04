@@ -4,6 +4,14 @@ import urllib.request, json
 from darksky import forecast
 from datetime import date, timedelta
 import requests
+from flask import Flask, request
+from twilio import twiml
+
+
+app = Flask(__name__)
+
+
+
 
 ## setting the url to the google geocode api to return information in json
 url = 'https://maps.googleapis.com/maps/api/geocode/json'
@@ -41,25 +49,34 @@ dd = datetime.datetime.today().strftime('%d')
 mm = datetime.datetime.today().strftime('%m')
 yy = datetime.datetime.today().strftime('%Y')
 
-## Calling Numbers API for a random fact about today in history.
-with urllib.request.urlopen("http://numbersapi.com/" + mm + "/" + dd +  "/date?json") as url:
-    data = json.loads(url.read().decode())
-
+## Darksky API KEY
 key = "c9e27dbf8ba59e0820e721f9e3e088f7"
 
 location = forecast(key, lat, lon)
 
-print(location.temperature)
+message = "Today's temperature is {} degrees at {}".format(location.temperature, params["address"])
 
 
 ## Calling twilio API library, using Client
 test = Client(account_sid, auth_token)
 
 ## Makes a test message from Twilio # to given #, with a body message of "body"
-##sms = test.messages.create(
-##    to="+18565059979",
-##    from_="+16108549557",
-##    body=data['text'])
+sms = test.messages.create(
+    to="+18565059979",
+    from_="+16108549557",
+    body=message)
+
+## Runs the program
+print(sms.sid)
+
+##@app.route('/sms', methods=['POST'])
+##def sms():
+##    number = request.form['From']
+##    message_body = request.form['Body']
 ##
-#### Runs the program
-##print(sms.sid)
+##    resp = twiml.Response()
+##    resp.message('Hello {}, you said: {}'.format(number, message_body))
+##    return str(resp)
+##
+##if __name__ == '__main__':
+##    app.run()

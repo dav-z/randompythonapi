@@ -41,8 +41,6 @@ def sms():
     ## set variables for long and lat
     lat = result['geometry']['location']['lat']
     lon = result['geometry']['location']['lng']
-    account_sid = "AC0787ce7bbc2aed7293ae60beee27480d"
-    auth_token  = "734e725ff3b749ff21c8ef7a807359af"
 
     ## Darksky API KEY
     key = "c9e27dbf8ba59e0820e721f9e3e088f7"
